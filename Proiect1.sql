@@ -1,0 +1,1282 @@
+--Crere baze de date Spital
+
+
+-- Creare secvente pentru id-urile tabelului Medic
+CREATE SEQUENCE medic_seq START WITH 1 INCREMENT BY 1;
+
+--  Creare tabel Medic
+CREATE TABLE Medic (
+    medic_id INT PRIMARY KEY,
+    nume VARCHAR2(100) NOT NULL,
+    specializare VARCHAR2(100) NOT NULL,
+    cod_parafa VARCHAR2(50) UNIQUE NOT NULL
+);
+
+-- Inserare date in tabelul Medici
+INSERT INTO Medic (medic_id, nume, specializare, cod_parafa) VALUES (medic_seq.NEXTVAL, 'Dr. Ion Popescu', 'Cardiologie', 'CP123');
+INSERT INTO Medic (medic_id, nume, specializare, cod_parafa) VALUES (medic_seq.NEXTVAL, 'Dr. Maria Ionescu', 'Neurologie', 'NP456');
+INSERT INTO Medic (medic_id, nume, specializare, cod_parafa) VALUES (medic_seq.NEXTVAL, 'Dr. Andrei Georgescu', 'Pediatrie', 'PP789');
+INSERT INTO Medic (medic_id, nume, specializare, cod_parafa) VALUES (medic_seq.NEXTVAL, 'Dr. Elena Dumitrescu', 'Ortopedie', 'OP012');
+INSERT INTO Medic (medic_id, nume, specializare, cod_parafa) VALUES (medic_seq.NEXTVAL, 'Dr. Vasile Petrescu', 'Chirurgie', 'CP345');
+INSERT INTO Medic (medic_id, nume, specializare, cod_parafa) VALUES (medic_seq.NEXTVAL, 'Dr. Ana Popa', 'Ginecologie', 'GP678');
+INSERT INTO Medic (medic_id, nume, specializare, cod_parafa) VALUES (medic_seq.NEXTVAL, 'Dr. Andreea Vasile', 'Oftalmologie', 'OP901');
+
+-- Selectare date din tabelul Medici
+SELECT * FROM Medic;
+
+-- Creare secvente pentru id-urile tabelului Pacient
+CREATE SEQUENCE pacient_seq START WITH 1 INCREMENT BY 1;
+
+-- Creare tabel Pacient
+CREATE TABLE Pacient (
+    pacient_id INT PRIMARY KEY,
+    nume VARCHAR2(100) NOT NULL,
+    prenume VARCHAR2(100) NOT NULL,
+    cnp VARCHAR2(13) UNIQUE NOT NULL,
+    data_nasterii DATE NOT NULL
+);
+
+-- Inserare date in tabelul Pacienti
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Ana', 'Dedu', '2900101123456', TO_DATE('01/01/90', 'DD/MM/YY'));
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'George', 'Albina', '1850215123456', TO_DATE('15/02/85', 'DD/MM/YY'));
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Elena', 'Vasile', '2780320123456', TO_DATE('20/03/78', 'DD/MM/YY'));
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Cristina', 'Georgescu', '6000410123456', TO_DATE('10/04/00', 'DD/MM/YY'));
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Ion', 'Dumitrescu','1950505123456', TO_DATE('05/05/95', 'DD/MM/YY'));
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Maria', 'Pop', '2800630123456', TO_DATE('30/06/80', 'DD/MM/YY'));
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Vasile', 'Ionescu', '1750725123456', TO_DATE('25/07/75', 'DD/MM/YY'));
+INSERT INTO Pacient (pacient_id, prenume, nume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Elena', 'Vasile', '2790720147890', TO_DATE('20/07/79', 'DD/MM/YY'));
+
+-- Selectare date din tabelul Pacienti
+SELECT * FROM Pacient;
+
+
+-- Creare secvente pentru id-urile tabelului Consultatie
+CREATE SEQUENCE consultatie_seq START WITH 1 INCREMENT BY 1;
+
+
+-- Create table Consultatie
+CREATE TABLE Consultatie (
+    consultatie_id INT PRIMARY KEY,
+    medic_id INT NOT NULL,
+    pacient_id INT NOT NULL,
+    data_consultatie DATE DEFAULT SYSDATE,
+    ora_consultatie TIMESTAMP  DEFAULT SYSTIMESTAMP,
+    FOREIGN KEY (medic_id) REFERENCES Medic (medic_id),
+    FOREIGN KEY (pacient_id) REFERENCES Pacient (pacient_id)
+);
+
+
+-- Inserare date in tabelul Consultatie
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 1, 1, TO_DATE('01/01/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 08:30:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 1, 1, TO_DATE('01/01/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 08:30:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 7, 5, TO_DATE('02/10/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 09:00:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 7, 3, TO_DATE('03/11/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 10:30:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 4, 2, TO_DATE('04/12/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 11:00:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 5, 4, TO_DATE('05/02/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 12:00:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 6, 6, TO_DATE('06/03/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 13:30:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 2, 7, TO_DATE('07/04/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 14:00:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 1, 1, TO_DATE('08/05/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 15:00:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 6, 8, TO_DATE('09/06/24', 'DD/MM/YY'), TO_TIMESTAMP('01/10/24 16:30:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 1, 8, TO_DATE('03/06/24', 'DD/MM/YY'), TO_TIMESTAMP('03/06/24 12:00:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+INSERT INTO Consultatie (consultatie_id, medic_id, pacient_id, data_consultatie, ora_consultatie) VALUES (consultatie_seq.NEXTVAL, 6, 8, TO_DATE('10/07/24', 'DD/MM/YY'), TO_TIMESTAMP('03/06/24 12:00:00.000000000', 'DD/MM/YY HH24:MI:SS.FF'));
+
+-- Selectare date din tabelul Consultatie
+SELECT * FROM Consultatie;
+
+-- Creare secvente pentru id-urile tabelului  Afecțiune
+CREATE SEQUENCE afectiune_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE Afectiune (
+    afectiune_id INT PRIMARY KEY,
+    denumire VARCHAR2(100)  DEFAULT 'Indefinit',
+    descriere VARCHAR2(100) DEFAULT 'N/A'
+);
+
+-- Inserare date in tabelul Afectiune
+INSERT INTO Afectiune (afectiune_id, denumire, descriere) VALUES (afectiune_seq.NEXTVAL, 'Tahicardie', 'Ritmul cardiac accelerat');
+INSERT INTO Afectiune (afectiune_id, denumire, descriere) VALUES (afectiune_seq.NEXTVAL, 'Migrena', 'Dureri de cap intense');
+INSERT INTO Afectiune (afectiune_id, denumire, descriere) VALUES (afectiune_seq.NEXTVAL, 'Hernie de disc', 'Durere la nivelul spatelui si picioarelor');
+INSERT INTO Afectiune (afectiune_id, denumire, descriere) VALUES (afectiune_seq.NEXTVAL, 'Miopie', 'Vedere incetosata la distanta');
+INSERT INTO Afectiune (afectiune_id, denumire, descriere) VALUES (afectiune_seq.NEXTVAL, 'Sanatos', 'Fara probleme de sanatate');
+INSERT INTO Afectiune (afectiune_id, denumire, descriere) VALUES (afectiune_seq.NEXTVAL, 'Hipermetropie', 'Vedere incetosata la aproape');
+INSERT INTO Afectiune (afectiune_id, descriere) VALUES (afectiune_seq.NEXTVAL, 'Dureri de burta');
+
+-- Selectare date din tabelul Afectiune
+SELECT * FROM Afectiune;
+
+-- Creare secvente pentru id-urile tabelului Tratament
+CREATE SEQUENCE tratament_seq START WITH 1 INCREMENT BY 1;
+
+-- Crare table Tratamente
+CREATE TABLE Tratament (
+    tratament_id INT PRIMARY KEY,
+    denumire VARCHAR2(100) NOT NULL,
+    descriere VARCHAR2(100) DEFAULT 'N/A',
+    data_incepere DATE DEFAULT SYSDATE,
+    data_sfarsit DATE DEFAULT SYSDATE
+);
+
+-- Inserare date in tabelul Tratament
+INSERT INTO Tratament (tratament_id, denumire, descriere, data_incepere, data_sfarsit) VALUES (tratament_seq.NEXTVAL, 'Tratament pentru tahicardie', 'Medicatie pentru reglarea ritmului cardiac', TO_DATE('01/01/24', 'DD/MM/YY'), TO_DATE('15/01/25', 'DD/MM/YY'));
+INSERT INTO Tratament (tratament_id, denumire, descriere, data_incepere, data_sfarsit) VALUES (tratament_seq.NEXTVAL, 'Paracetamol', 'Medicatie pentru calmarea durerilor de cap', TO_DATE('02/10/24', 'DD/MM/YY'), TO_DATE('05/10/24', 'DD/MM/YY'));
+INSERT INTO Tratament (tratament_id, denumire, descriere, data_incepere, data_sfarsit) VALUES (tratament_seq.NEXTVAL, 'Antiinflamatoare', 'Medicatie pentru reducerea inflamatiei', TO_DATE('03/11/24', 'DD/MM/YY'), TO_DATE('10/11/24', 'DD/MM/YY'));
+INSERT INTO Tratament (tratament_id, denumire, descriere, data_incepere, data_sfarsit) VALUES (tratament_seq.NEXTVAL, 'Norofen', 'N/A', TO_DATE('04/12/24', 'DD/MM/YY'), TO_DATE('10/12/24', 'DD/MM/YY'));
+INSERT INTO Tratament (tratament_id, denumire, descriere, data_incepere, data_sfarsit) VALUES (tratament_seq.NEXTVAL, 'Vitamine pentru ochi', 'Medicatie pentru imbunatatirea vederii', TO_DATE('05/02/24', 'DD/MM/YY'), TO_DATE('15/02/24', 'DD/MM/YY'));
+INSERT INTO Tratament (tratament_id, denumire, descriere, data_incepere, data_sfarsit) VALUES (tratament_seq.NEXTVAL, 'Ochelari', 'Dioptri: -1.5', TO_DATE('06/03/24', 'DD/MM/YY'), TO_DATE('20/03/25', 'DD/MM/YY'));
+INSERT INTO Tratament (tratament_id, denumire, descriere, data_incepere, data_sfarsit) VALUES (tratament_seq.NEXTVAL, 'Vitamine', 'Medicatie pentru mentinerea sanatatii', TO_DATE('06/03/24', 'DD/MM/YY'), TO_DATE('20/03/24', 'DD/MM/YY'));
+INSERT INTO Tratament (tratament_id, denumire) VALUES (tratament_seq.NEXTVAL, 'Operatie');
+
+-- Selectare date din tabelul Tratament
+SELECT * FROM Tratament;
+
+--Creare secvente pentru id-urile tabelului Afectiune_Tratament
+CREATE SEQUENCE afectiune_tratament_seq START WITH 1 INCREMENT BY 1;
+
+-- Creare tabel Afectiune_Tratament
+CREATE TABLE Afectiune_Tratament (
+    afectiune_tratament_id INT PRIMARY KEY,
+    UNIQUE (afectiune_id, tratament_id),
+    afectiune_id INT NOT NULL,
+    tratament_id INT NOT NULL,
+    FOREIGN KEY (afectiune_id) REFERENCES Afectiune (afectiune_id),
+    FOREIGN KEY (tratament_id) REFERENCES Tratament (tratament_id)
+);
+
+-- Inserare date in tabelul Afectiune_Tratament
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 1, 1);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 2, 2);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 2, 7);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 3, 3);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 3, 4);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 3, 8);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 4, 5);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 4, 6);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 5, 7);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 6, 6);
+INSERT INTO Afectiune_Tratament (afectiune_tratament_id, afectiune_id, tratament_id) VALUES (afectiune_tratament_seq.NEXTVAL, 6, 8);
+
+
+-- Selectare date din tabelul Afectiune_Tratament
+SELECT * FROM Afectiune_Tratament;
+
+--Creare secvente pentru id-urile tabelului Istoric_Medical
+CREATE SEQUENCE istoric_medical_seq START WITH 1 INCREMENT BY 1;
+
+-- Creare tabel Istoric_Medical
+CREATE TABLE Istoric_Medical (
+    istoric_medical_id INT PRIMARY KEY,
+    afectiune_tratament_id INT NOT NULL,
+    pacient_id INT NOT NULL,
+    data_diagnostic DATE DEFAULT SYSDATE,
+    UNIQUE (afectiune_tratament_id, pacient_id),
+    FOREIGN KEY (afectiune_tratament_id) REFERENCES Afectiune_Tratament (afectiune_tratament_id),
+    FOREIGN KEY (pacient_id) REFERENCES Pacient (pacient_id)
+);
+
+-- Inserare date in tabelul Istoric_Medical
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 1, 1, TO_DATE('01/01/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 2, 2, TO_DATE('02/10/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 3, 2, TO_DATE('03/11/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 4, 4, TO_DATE('04/12/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 5, 4, TO_DATE('05/02/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 6, 4, TO_DATE('06/03/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 7, 6, TO_DATE('07/04/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 8, 5, TO_DATE('08/05/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 9, 5, TO_DATE('09/06/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 10, 3, TO_DATE('03/06/24', 'DD/MM/YY'));
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 7, 1, TO_DATE('10/07/24', 'DD/MM/YY'));
+
+-- Selectare date din tabelul Istoric_Medical
+SELECT * FROM Istoric_Medical;
+
+--Creare secvente pentru id-urile tabelului Investigatie
+CREATE SEQUENCE investigatie_seq START WITH 1 INCREMENT BY 1;
+
+-- Creare tabel Investigatie
+CREATE TABLE Investigatie (
+    investigatie_id INT PRIMARY KEY,
+    denumire VARCHAR2(100) NOT NULL,
+    descriere VARCHAR2(100) DEFAULT 'N/A',
+    pret NUMBER(5, 2) DEFAULT 0,
+    data_inceput DATE DEFAULT SYSDATE,
+    data_sfarsit DATE DEFAULT SYSDATE
+);
+
+-- Inserare date in tabelul Investigatie
+INSERT INTO Investigatie (investigatie_id, denumire, descriere, pret, data_inceput, data_sfarsit) VALUES (investigatie_seq.NEXTVAL, 'Electrocardiograma', 'Examinare ritm cardiac', 200.00, TO_DATE('01/01/24', 'DD/MM/YY'), TO_DATE('15/01/25', 'DD/MM/YY'));
+INSERT INTO Investigatie (investigatie_id, denumire, descriere, pret, data_inceput, data_sfarsit) VALUES (investigatie_seq.NEXTVAL, 'Tomografie', 'Examinare creier', 500.00, TO_DATE('02/10/24', 'DD/MM/YY'), TO_DATE('05/10/24', 'DD/MM/YY'));
+INSERT INTO Investigatie (investigatie_id, denumire, descriere, pret, data_inceput, data_sfarsit) VALUES (investigatie_seq.NEXTVAL, 'RMN', 'Examinare coloana vertebrala', 700.00, TO_DATE('03/11/24', 'DD/MM/YY'), TO_DATE('10/11/24', 'DD/MM/YY'));
+INSERT INTO Investigatie (investigatie_id, denumire, descriere, pret, data_inceput, data_sfarsit) VALUES (investigatie_seq.NEXTVAL, 'Examinare ochi', 'Examinare vedere', 150.00, TO_DATE('04/12/24', 'DD/MM/YY'), TO_DATE('10/12/24', 'DD/MM/YY'));
+INSERT INTO Investigatie (investigatie_id, denumire, descriere, pret, data_inceput, data_sfarsit) VALUES (investigatie_seq.NEXTVAL, 'Ecografie', 'Examinare organe interne', 300.00, TO_DATE('05/02/24', 'DD/MM/YY'), TO_DATE('15/02/24', 'DD/MM/YY'));
+INSERT INTO Investigatie (investigatie_id, denumire, descriere, pret, data_inceput, data_sfarsit) VALUES (investigatie_seq.NEXTVAL, 'Analize de sange', 'Examinare sange', 100.00, TO_DATE('06/03/24', 'DD/MM/YY'), TO_DATE('20/03/25', 'DD/MM/YY'));
+INSERT INTO Investigatie (investigatie_id, denumire, descriere, pret, data_inceput, data_sfarsit) VALUES (investigatie_seq.NEXTVAL, 'Radiografie', 'Examinare oase', 250.00, TO_DATE('06/03/24', 'DD/MM/YY'), TO_DATE('20/03/24', 'DD/MM/YY'));
+INSERT INTO Investigatie (investigatie_id, denumire, pret) VALUES (investigatie_seq.NEXTVAL, 'Test de sarcina', 50.00);
+
+-- Selectare date din tabelul Investigatie
+SELECT * FROM Investigatie;
+
+--Creare secvente pentru id-urile tabelului Fisa_Medicala
+CREATE SEQUENCE fisa_medicala_seq START WITH 1 INCREMENT BY 1;
+
+-- Creare tabel Fisa_Medicala
+CREATE TABLE Fisa_Medicala (
+    fisa_medicala_id INT PRIMARY KEY,
+    investigatie_id INT NOT NULL,
+    pacient_id INT NOT NULL,
+    adresa VARCHAR2(100) DEFAULT 'N/A',
+    nr_telefon VARCHAR2(10) DEFAULT 'N/A',
+    FOREIGN KEY (investigatie_id) REFERENCES Investigatie (investigatie_id),
+    FOREIGN KEY (pacient_id) REFERENCES Pacient (pacient_id)
+);
+
+-- Inserare date in tabelul Fisa_Medicala
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 3, 1, 'Str. Mihai Eminescu, nr. 1', '0723456789');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 1, 1, 'Str. Mihai Eminescu, nr. 1', '0723456789');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 7, 1, 'Str. Mihai Eminescu, nr. 1', '0723456789');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 2, 2, 'Str. Ion Creanga, nr. 2', '0723456789');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 5, 3, 'Str. Ciberneticii nr. 9', '0735856336');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 4, 3, 'Str. Ciberneticii nr. 9', '0735856336');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 6, 4, 'Str. Mihai Viteazu, nr. 3', '0733361690');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 5, 4, 'Str. Mihai Viteazu, nr. 3', '0733361690');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 6, 5, 'Str. Aviatorilor, nr. 5', '0733361690');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 6, 6, 'Str. Aviatorilor, nr. 15', '0733361690');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 7, 6, 'Str. Aviatiilor, nr. 115', '0733361690');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 8, 7, 'Str. Aviatiilor, nr. 1215', '0733361690');
+INSERT INTO Fisa_Medicala (fisa_medicala_id, investigatie_id, pacient_id, adresa, nr_telefon) VALUES (fisa_medicala_seq.NEXTVAL, 6, 8, 'Str. Barbu, nr.1 ', '0733368690');
+-- Selectare date din tabelul Fisa_Medicala
+SELECT * FROM Fisa_Medicala;
+
+--UPADATE
+--Ii atribui pcientului cu id 7 o afectiune (Sanatos) 
+INSERT INTO Istoric_Medical (istoric_medical_id, afectiune_tratament_id, pacient_id, data_diagnostic) VALUES (istoric_medical_seq.NEXTVAL, 9, 7, TO_DATE('10/07/24', 'DD/MM/YY'));
+
+--Elimin afectiunea (Sanatos) pentru pacientul cu id 5
+DELETE FROM Istoric_Medical WHERE pacient_id = 5 AND afectiune_tratament_id = 9;
+
+--Fac update la specializarea medicului cu id 4 
+UPDATE Medic SET specializare = 'Neurologie' WHERE medic_id = 4;
+
+--Fac update la specialitatea medicului cu id 2 
+UPDATE Medic SET specializare = 'Medic de familie' WHERE medic_id = 2;
+
+--UPADATE afectiunde Indefinit pentru pacientul cu id Dumitrescu Ion
+
+--6. Formulați în limbaj natural o problemă pe care să o rezolvați folosind un subprogram stocat
+--independent care să utilizeze toate cele 3 tipuri de colecții studiate. Apelați subprogramul.
+--Scrieți un subprogram stocat independent (de tip procedură) care să calculeze numărul total de consultații 
+--efectuate de fiecare medic și să afișeze fisa medicala(adresa si numarul de telefon) a fiecărui pacient care a beneficiat de consultații. 
+--Procedura trebuie să utilizeze cele trei tipuri de colecții pentru a modela medicii, consultațiile și pacienții și 
+--să trateze eventualele erori, cum ar fi:
+--•	Medicii fără consultații înregistrate. -No_Data_Found
+--•	Pacienții fără un diagnostic atribuit.
+--•	Pacienții care au dat date de contact multiple. -Too_Many_Rows
+
+--Definiti:
+--Nested Table =  o colecție de obiecte de același tip, a căror dimensiune poate varia dinamic.
+--Associative Array = o colecție de perechi cheie-valoare, unde cheile sunt de tip integer.
+--VARRAY = un tip de colecție cu dimensiune fixă, definită la nivel de schemă.
+
+-- Definire tip la nivel de schemă pentru rândurile din tabelul Medici
+--Folosc un obiect pentru a stoca id-ul si numele medicului
+--object = un tip de date compus definit de utilizator, care poate fi folosit pentru a stoca un set de atribute.
+--difere de un tabel prin faptul ca un obiect nu poate fi folosit pentru a stoca mai multe rânduri de date.
+CREATE OR REPLACE TYPE medic_row AS OBJECT (
+    id_medic NUMBER,
+    nume VARCHAR2(100)
+);
+/
+
+-- Definire tip Nested Table bazat pe medic_row
+CREATE OR REPLACE TYPE medici_nt AS TABLE OF medic_row;
+/
+
+-- Definire VARRAY pentru pacienți
+CREATE OR REPLACE TYPE pacient_varray AS VARRAY(100) OF NUMBER; -- VARRAY cu dimensiune fixă in care se stochează id-urile pacienților
+/
+
+-- Creare procedură pentru generarea raportului de activitate
+CREATE OR REPLACE PROCEDURE Raport_Activitate IS
+    -- Declarare Nested Table pentru medici
+    medici medici_nt;
+
+    -- Declarare Associative Array pentru consultații
+    TYPE consultatii_array IS TABLE OF NUMBER INDEX BY PLS_INTEGER;
+    consultatii consultatii_array;
+
+    -- Declarare VARRAY pentru pacienți
+    TYPE pacienti_array IS TABLE OF pacient_varray INDEX BY PLS_INTEGER;
+    pacient_var pacienti_array;
+
+    -- Variabile locale pentru detalii pacient și afectiuni
+
+    -- Nume și prenume pacient
+    nume_pacient Pacient.nume%TYPE; 
+    prenume_pacient Pacient.prenume%TYPE;
+
+    --Fisa medicala
+    adresa Fisa_Medicala.adresa%TYPE; -- Adresa pacient
+    nr_telefon Fisa_Medicala.nr_telefon%TYPE;-- Număr de telefon pacient
+
+    -- Afectiuni pacient
+    nr_afectiuni NUMBER; -- Număr afecțiuni pacient
+    denumire_afectiune Afectiune.denumire%TYPE; -- Denumire afecțiune
+
+    -- Număr consultații pacient
+    nr_consultatii NUMBER;
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Raport Activitate');
+    DBMS_OUTPUT.PUT_LINE('---------------------------------');
+
+    -- Selectare medici
+    SELECT medic_row(medic_id, nume)
+    BULK COLLECT INTO medici
+    FROM Medic;
+
+    -- Inițializare consultații pentru fiecare medic
+    FOR i IN 1..medici.COUNT LOOP
+        consultatii(medici(i).id_medic) := 0; -- Inițial, zero consultații
+    END LOOP;
+
+    -- Procesare pentru fiecare medic
+    FOR i IN 1..medici.COUNT LOOP
+        BEGIN
+            pacient_var(medici(i).id_medic) := pacient_varray(); -- VARRAY gol
+
+            -- Afisare număr consultații efectuate de fiecare medic
+            SELECT COUNT(*)
+            INTO consultatii(medici(i).id_medic)
+            FROM Consultatie
+            WHERE medic_id = medici(i).id_medic;
+
+            IF consultatii(medici(i).id_medic) = 0 THEN
+                RAISE NO_DATA_FOUND;
+            END IF;
+
+            DBMS_OUTPUT.PUT_LINE('Medic: ' || medici(i).nume || ' - Numar Consultatii: ' || consultatii(medici(i).id_medic));
+
+            -- Selectare pacienți consultați de medic
+            SELECT DISTINCT pacient_id -- Distinct pentru a evita pacienții cu mai multe consultații la același medic
+            BULK COLLECT INTO pacient_var(medici(i).id_medic)
+            FROM Consultatie
+            WHERE medic_id = medici(i).id_medic;
+
+            -- Iterare prin lista de pacienți
+            FOR j IN 1..pacient_var(medici(i).id_medic).COUNT LOOP
+                DBMS_OUTPUT.PUT_LINE('Pacient ID: ' || pacient_var(medici(i).id_medic)(j));
+
+                -- Afisare nume și prenume pacient
+                SELECT nume, prenume
+                INTO nume_pacient, prenume_pacient
+                FROM Pacient
+                WHERE pacient_id = pacient_var(medici(i).id_medic)(j);
+
+                DBMS_OUTPUT.PUT_LINE('Nume: ' || nume_pacient || ' Prenume: ' || prenume_pacient);
+
+                -- Afisare detalii fisa medicala
+                SELECT Distinct adresa , nr_telefon --Distinct pentru a evita pacienții cu mai multe consultații la același medic
+                INTO adresa, nr_telefon
+                FROM Fisa_Medicala
+                WHERE pacient_id = pacient_var(medici(i).id_medic)(j);
+
+                DBMS_OUTPUT.PUT_LINE('Fisa Medicala: ' || adresa || ' nr. telefon: ' || nr_telefon);
+
+                --Verificare numar consultații pacient
+                SELECT COUNT(*)
+                INTO nr_consultatii
+                FROM Consultatie
+                WHERE pacient_id = pacient_var(medici(i).id_medic)(j) AND medic_id = medici(i).id_medic;
+                
+                -- Afisare nr consultații pacient la acelasi medic
+                DBMS_OUTPUT.PUT_LINE('Numar Consultatii la medicul curent: ' || nr_consultatii);
+
+                -- Verificare dacă pacientul are afecțiuni
+                SELECT COUNT(*)
+                INTO nr_afectiuni
+                FROM Istoric_Medical
+                WHERE pacient_id = pacient_var(medici(i).id_medic)(j);
+
+                -- Afișare afecțiuni
+                IF nr_afectiuni > 0 THEN
+                    DBMS_OUTPUT.PUT_LINE('Afecțiuni:');
+                    FOR k IN (SELECT Distinct A.denumire
+                              FROM Afectiune A
+                              JOIN Afectiune_Tratament AT ON A.afectiune_id = AT.afectiune_id
+                              JOIN Istoric_Medical IM ON AT.afectiune_tratament_id = IM.afectiune_tratament_id
+                              WHERE IM.pacient_id = pacient_var(medici(i).id_medic)(j)) LOOP
+                        DBMS_OUTPUT.PUT_LINE('-'||k.denumire);
+                    END LOOP;
+
+                ELSE
+                    DBMS_OUTPUT.PUT_LINE('Pacientul nu are afecțiuni înregistrate.');
+                END IF;
+            END LOOP;
+
+            DBMS_OUTPUT.PUT_LINE('---------------------------------');
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                DBMS_OUTPUT.PUT_LINE('Nu există consultații pentru medicul ' || medici(i).nume);
+                DBMS_OUTPUT.PUT_LINE('---------------------------------');
+            WHEN TOO_MANY_ROWS THEN
+                DBMS_OUTPUT.PUT_LINE('Prea multe înregistrări găsite ');
+                DBMS_OUTPUT.PUT_LINE('---------------------------------');
+        END;
+    END LOOP;
+END;
+/
+
+
+-- Apelare procedură
+BEGIN
+    Raport_Activitate;
+END;
+
+
+--7. 	Scrieți un subprogram stocat independent (de tip procedură) care să parcurgă toți medicii din baza de date 
+--(folosind un cursor simplu). Pentru fiecare medic, să se extragă consultațiile efectuate de acesta într-o anumită 
+--perioadă (parametrii perioadei sunt transmiși subprogramului) și să se afișeze lista pacienților consultați in acea perioada. 
+--Să trateze eventualele erori, cum ar fi:
+--•	Situația în care un medic nu are consultații în perioada specificată (NO_DATA_FOUND).
+--•	Situația în care datele sunt ambigue, de exemplu, un medic este asociat cu mai multe înregistrări duplicate pentru aceeași consultație (TOO_MANY_ROWS).
+CREATE OR REPLACE PROCEDURE Consultatii_Perioada(
+    data_inceput IN DATE,
+    data_sfarsit IN DATE
+) IS
+    -- Cursor pentru medici
+    CURSOR c_medici IS
+        SELECT medic_id, nume
+        FROM Medic;
+
+    -- Cursor pentru consultații
+    CURSOR c_consultatii (medic_id_param NUMBER) IS
+        SELECT pacient_id, data_consultatie, consultatie_id
+        FROM Consultatie
+        WHERE medic_id = medic_id_param AND data_consultatie BETWEEN data_inceput AND data_sfarsit;
+
+    -- Variabile pentru stocarea informațiilor despre pacient
+    pacient_nume   Pacient.nume%TYPE;
+    pacient_prenume Pacient.prenume%TYPE;
+    nr_pacienti NUMBER;
+
+BEGIN
+    -- Iterare prin medici
+    FOR medici_rec IN c_medici LOOP
+        DBMS_OUTPUT.PUT_LINE('Medic: ' || medici_rec.nume);
+        DBMS_OUTPUT.PUT_LINE('---------------------------------');
+
+        BEGIN
+            -- Flag pentru a detecta dacă există consultații
+            DECLARE
+                exista_consultatii BOOLEAN := FALSE;
+            BEGIN
+                -- Iterare prin consultațiile unui medic
+                FOR consultatii_rec IN c_consultatii(medici_rec.medic_id) LOOP
+                    exista_consultatii := TRUE;
+                    BEGIN
+                        -- Obținerea numelui pacientului
+                        SELECT nume, prenume
+                        INTO pacient_nume, pacient_prenume
+                        FROM Pacient
+                        WHERE pacient_id = consultatii_rec.pacient_id;
+
+                        -- Verificare dacă există mai mulți pacienți cu același ID consultati de același medic
+                        SELECT COUNT(*)
+                        INTO nr_pacienti
+                        FROM Consultatie
+                        WHERE pacient_id = consultatii_rec.pacient_id 
+                          AND medic_id = medici_rec.medic_id
+                          AND TO_CHAR(data_consultatie, 'YYYY-MM-DD') = TO_CHAR(consultatii_rec.data_consultatie, 'YYYY-MM-DD');
+                        
+                        IF nr_pacienti > 1 THEN
+                            RAISE TOO_MANY_ROWS;
+                        END IF;
+
+
+                        DBMS_OUTPUT.PUT_LINE('Pacient: ' || pacient_nume || ' ' || pacient_prenume || ' - Data Consultație: ' || consultatii_rec.data_consultatie);
+                    EXCEPTION
+                        WHEN TOO_MANY_ROWS THEN
+                            DBMS_OUTPUT.PUT_LINE('Date ambigue pentru pacientul cu ID ' || consultatii_rec.pacient_id);
+                    END;
+                END LOOP;
+
+                -- Dacă nu există consultații, ridică NO_DATA_FOUND
+                IF NOT exista_consultatii THEN
+                    RAISE NO_DATA_FOUND;
+                END IF;
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    DBMS_OUTPUT.PUT_LINE('Nu există consultații pentru medicul ' || medici_rec.nume || ' în perioada specificată.');
+            END;
+        END;
+
+        DBMS_OUTPUT.PUT_LINE('---------------------------------');
+    END LOOP;
+
+END;
+/
+-- Apelare procedură
+BEGIN
+    Consultatii_Perioada(TO_DATE('2024-01-01', 'YYYY-MM-DD'), TO_DATE('2024-05-9', 'YYYY-MM-DD'));
+END;
+
+--8.Un spital dorește să automatizeze procesul de obținere a detaliilor despre pacienții care urmează un tratament
+-- pentru o anumită afecțiune. Administratorul bazei de date dorește să implementeze un subprogram de tip funcție care să 
+--primească drept parametri următoarele informații: numele medicului si numele afectiunii. Funcția trebuie să returneze o
+-- listă de pacienți care primesc tratament pentru afecțiunea specificată, împreună cu detalii despre tratament si specialitatea medicului.
+
+CREATE OR REPLACE FUNCTION Detalii_Tratament(
+    nume_medic IN VARCHAR2,
+    denumire_afectiune IN VARCHAR2
+) RETURN VARCHAR2 IS
+    -- Variabile pentru stocarea informațiilor despre pacient
+
+    -- Nume și prenume pacient
+    pacient_nume   Pacient.nume%TYPE;
+    pacient_prenume Pacient.prenume%TYPE;
+
+    --Numele tratamentului
+    detalii_tratament Tratament.denumire%TYPE;
+
+    -- Variabile pentru stocarea informațiilor despre medic
+    specialitate_medic Medic.specializare%TYPE;
+    nr_pacienti NUMBER;
+
+    -- Variabilă pentru rezultatul funcției
+    result VARCHAR2(32767);-- Dimensiunea maximă a unui șir de caractere în Oracle/ Putem folosi tipul CLOB pentru a depăși această limită
+    
+BEGIN
+    -- Obținerea specializării medicului
+    BEGIN
+        SELECT specializare
+        INTO specialitate_medic
+        FROM Medic
+        WHERE nume = nume_medic;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN 'Medicul ' || nume_medic || ' nu a fost găsit.';
+    END;
+
+    -- Obținerea tratamentelor pentru afecțiunea specificată
+    FOR tratament_rec IN (
+        SELECT p.nume, p.prenume, t.denumire
+        FROM Tratament t
+        JOIN Afectiune_Tratament at ON t.tratament_id = at.tratament_id 
+        JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+        JOIN Istoric_Medical im ON at.afectiune_tratament_id = im.afectiune_tratament_id
+        JOIN Pacient p ON im.pacient_id = p.pacient_id
+        JOIN Consultatie c ON p.pacient_id = c.pacient_id
+        JOIN Medic m ON c.medic_id = m.medic_id
+        WHERE m.nume = nume_medic AND a.denumire = denumire_afectiune
+    ) LOOP
+
+        pacient_nume := tratament_rec.nume;
+        pacient_prenume := tratament_rec.prenume;
+
+        -- Verificare dacă există mai multe rânduri returnate pentru același pacient
+        SELECT COUNT(*)
+        INTO nr_pacienti
+        FROM Consultatie c
+        JOIN Medic m ON c.medic_id = m.medic_id
+        JOIN Pacient p ON c.pacient_id = p.pacient_id
+        WHERE p.nume = pacient_nume AND p.prenume = pacient_prenume and c.data_consultatie = data_consultatie;
+
+        IF nr_pacienti > 1 THEN
+            RAISE TOO_MANY_ROWS;
+        END IF;
+        result := result || 'Pacient: ' || tratament_rec.nume || ' ' || tratament_rec.prenume || ' - Tratament: ' || tratament_rec.denumire || ' - Specialitate Medic: ' || specialitate_medic || CHR(10);
+    END LOOP;
+
+    IF result IS NULL THEN
+        RETURN 'Nu există tratamente pentru medicul ' || nume_medic || ' și afecțiunea ' || denumire_afectiune;
+    ELSE
+        RETURN result;
+    END IF;
+
+EXCEPTION
+    WHEN TOO_MANY_ROWS THEN
+        RETURN 'Date ambigue pentru pacientul ' || pacient_nume || ' ' || pacient_prenume ;
+END;
+/
+
+-- Apelare funcție
+
+BEGIN
+    --Apelare no_data_found
+    DBMS_OUTPUT.PUT_LINE(Detalii_Tratament('Dr. Ion', 'N/A'));
+    --Apelare too_many_rows
+    DBMS_OUTPUT.PUT_LINE(Detalii_Tratament('Dr. Ion Popescu', 'Tahicardie'));
+    --Apelare corecta
+    DBMS_OUTPUT.PUT_LINE(Detalii_Tratament('Dr. Elena Dumitrescu', 'Migrena'));
+    --Apelare null
+    DBMS_OUTPUT.PUT_LINE(Detalii_Tratament('Dr. Elena Dumitrescu', 'N/A'));
+END;
+
+
+--9. Un spital dorește să implementeze o procedură  stocată care să genereze un raport detaliat despre pacienții care au fost 
+--consultați pentru o anumită afecțiune și care urmează un tratament specific. 
+--Procedura va include informații esențiale pentru a facilita urmărirea stării de sănătate 
+--a pacienților și colaborarea între medici. 
+--Procedura va primi doi parametri:
+--•	nume_afectiune (tip VARCHAR2) – reprezintă numele afecțiunii pentru care se dorește raportul.
+--•	data_inceput (tip DATE) – reprezintă data de început pentru intervalul de timp în care să fie analizate consultațiile.
+--Raportul generat trebuie să includă următoarele informații:
+--•	Numele fiecărui pacient.
+--•	Numele medicului care l-a consultat.
+--•	Numele afecțiunii diagnosticate.
+--•	Numele tratamentului prescris și detalii destpre acesta.
+--•	Data fiecărei consultații.
+--•	Data inceperii tratamentului 
+--•	Data terminarii tratamentului
+--Trebuie tratate urmatoarele exceptii:
+--•	AFECTIUNE_INEXISTENTA
+--•	TREATMENT_INEXISTENTA
+--•	DATA_INEXISTENTA - nu exista consultații pentru afecțiunea specificată la data specificată  
+--•	NO_DATA_FOUND
+--•	TOO_MANY_ROWS 
+
+CREATE OR REPLACE PROCEDURE Raport_Afectiune(
+    nume_afectiune IN VARCHAR2,
+    data_inceput IN DATE
+) IS
+    -- Variabile pentru stocarea informațiilor despre pacient
+
+    -- Nume și prenume pacient
+    pacient_nume   Pacient.nume%TYPE;
+    pacient_prenume Pacient.prenume%TYPE;
+
+    -- Numele medicului
+    medic_nume Medic.nume%TYPE;
+
+    -- Numele afecțiunii
+    denumire_afectiune Afectiune.denumire%TYPE;
+
+    -- Detalii tratament
+    detalii_tratament Tratament.denumire%TYPE; -- Denumire tratament
+    data_incepere_tratament Tratament.data_incepere%TYPE; -- Data începerii tratamentului
+    data_sfarsit_tratament Tratament.data_sfarsit%TYPE; -- Data sfârșitului tratamentului
+
+    -- Variabile pentru stocarea informațiilor despre consultație
+    data_consultatie Consultatie.data_consultatie%TYPE;
+    nr_pacienti NUMBER;
+    nr_tratamente NUMBER;
+    nr_consultatii NUMBER;
+
+    result VARCHAR2(32767);
+
+    ---Exceptii
+    AFECTIUNE_INEXISTENTA EXCEPTION;
+    DATA_INEXISTENTA EXCEPTION;
+    TRATAMENT_INEXISTENTA EXCEPTION;
+   --NO_DATA_FOUND EXCEPTION;
+    --TOO_MANY_ROWS EXCEPTION;
+
+BEGIN
+    -- Verificare existență afecțiune
+    BEGIN
+        SELECT COUNT(*)
+        INTO nr_pacienti
+        FROM Afectiune
+        WHERE denumire = nume_afectiune;
+
+        IF nr_pacienti = 0 THEN
+            RAISE AFECTIUNE_INEXISTENTA;
+        END IF;
+    END;
+
+    -- Verificare existență tratament
+    BEGIN
+        SELECT COUNT(*)
+        INTO nr_tratamente
+        FROM Tratament
+        JOIN Afectiune_Tratament at ON Tratament.tratament_id = at.tratament_id
+        JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+        WHERE a.denumire = nume_afectiune;
+
+        IF nr_tratamente = 0 THEN
+            RAISE TRATAMENT_INEXISTENTA;
+        END IF;
+    END;
+
+    -- Verificare existență dată
+    BEGIN
+        SELECT COUNT(*)
+        INTO nr_consultatii
+        FROM Consultatie
+        WHERE data_consultatie = data_inceput;
+
+        IF nr_consultatii = 0 THEN
+            RAISE DATA_INEXISTENTA;
+        END IF;
+    END;
+    
+
+
+    -- Obținerea tratamentelor pentru afecțiunea specificată
+    FOR tratament_rec IN (
+        SELECT p.nume AS pacient_nume, p.prenume AS pacient_prenume, m.nume AS medic_nume, 
+               a.denumire AS denumire_afectiune, t.denumire AS detalii_tratament, c.data_consultatie, t.data_incepere, t.data_sfarsit
+        FROM Tratament t
+        JOIN Afectiune_Tratament at ON t.tratament_id = at.tratament_id 
+        JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+        JOIN Istoric_Medical im ON at.afectiune_tratament_id = im.afectiune_tratament_id
+        JOIN Pacient p ON im.pacient_id = p.pacient_id
+        JOIN Consultatie c ON p.pacient_id = c.pacient_id
+        JOIN Medic m ON c.medic_id = m.medic_id
+        WHERE a.denumire = nume_afectiune AND c.data_consultatie >= data_inceput
+    ) LOOP
+
+        pacient_nume := tratament_rec.pacient_nume;
+        pacient_prenume := tratament_rec.pacient_prenume;
+        medic_nume := tratament_rec.medic_nume;
+        denumire_afectiune := tratament_rec.denumire_afectiune;
+        detalii_tratament := tratament_rec.detalii_tratament;
+        data_consultatie := tratament_rec.data_consultatie;
+        data_incepere_tratament := tratament_rec.data_incepere;
+        data_sfarsit_tratament := tratament_rec.data_sfarsit;
+
+    
+
+        -- Verificare dacă exista consultații pentru afecțiunea specificată la data specificată
+        SELECT COUNT(*)
+        INTO nr_consultatii
+        FROM Consultatie
+        WHERE pacient_id = (
+            SELECT pacient_id
+            FROM Pacient
+            WHERE nume = pacient_nume AND prenume = pacient_prenume
+        ) AND medic_id = (
+            SELECT medic_id
+            FROM Medic
+            WHERE nume = medic_nume
+        ) AND data_consultatie = data_inceput;
+
+        IF nr_consultatii = 0 THEN
+            RAISE NO_DATA_FOUND;
+        END IF;
+
+        -- Verificare dacă există mai multe rânduri returnate pentru același pacient
+        SELECT COUNT(*)
+        INTO nr_pacienti
+        FROM Consultatie
+        WHERE pacient_id = (
+            SELECT pacient_id
+            FROM Pacient
+            WHERE nume = pacient_nume AND prenume = pacient_prenume
+        );
+        
+        IF nr_pacienti > 1 THEN
+            RAISE TOO_MANY_ROWS;
+        END IF;
+
+        result := result || 'Pacient: ' || pacient_nume || ' ' || pacient_prenume || ' - Medic: ' || medic_nume || ' - Afectiune: ' || denumire_afectiune || ' - Tratament: ' || detalii_tratament || ' - Data Consultație: ' || data_consultatie || ' - Data Incepere Tratament: ' || data_incepere_tratament || ' - Data Sfarsit Tratament: ' || data_sfarsit_tratament || CHR(10);
+    END LOOP;
+
+    IF result IS NULL THEN
+        RAISE NO_DATA_FOUND;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(result);
+    END IF;
+
+EXCEPTION
+    WHEN AFECTIUNE_INEXISTENTA THEN
+        DBMS_OUTPUT.PUT_LINE('Afecțiunea ' || nume_afectiune || ' nu există.');
+    WHEN TRATAMENT_INEXISTENTA THEN
+        DBMS_OUTPUT.PUT_LINE('Tratament Inexistent pentru: ' || nume_afectiune);
+    WHEN DATA_INEXISTENTA THEN
+        DBMS_OUTPUT.PUT_LINE('Nu există consultații pentru afecțiunea ' || nume_afectiune || ' la data ' || data_inceput);
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Nu există date pentru afecțiunea ' || nume_afectiune || ' la data ' || data_inceput);
+    WHEN TOO_MANY_ROWS THEN
+        DBMS_OUTPUT.PUT_LINE('Date ambigue pentru pacientul ' || pacient_nume || ' ' || pacient_prenume);
+END;
+/
+
+-- Apelare procedură
+BEGIN
+    --Apelare afecțiune inexistentă
+    Raport_Afectiune('Gripa', TO_DATE('2024-01-01', 'YYYY-MM-DD'));
+    --Apelare tratament inexistent
+    Raport_Afectiune('Indefinit', TO_DATE('2024-10-02', 'YYYY-MM-DD'));
+    --Apelare data inexistentă
+    Raport_Afectiune('Tahicardie', TO_DATE('2024-01-02', 'YYYY-MM-DD'));
+    --Apelare no data found
+    Raport_Afectiune('Migrena', TO_DATE('2024-01-01', 'YYYY-MM-DD'));
+    --Apelare too many rows
+    Raport_Afectiune('Tahicardie', TO_DATE('2024-01-01', 'YYYY-MM-DD'));
+    --Apelare corectă
+    Raport_Afectiune('Migrena', TO_DATE('2024-12-04', 'YYYY-MM-DD'));
+   
+END;
+
+--10. Definiți un trigger de tip LMD la nivel de comandă. Declanșați trigger-ul.
+--trigger lmd la nivel de comanda = se declanseaza o singura data pentru operatiile de insert, update sau delete
+
+CREATE Table Pacient_copie AS SELECT * FROM Pacient;
+
+
+CREATE OR REPLACE TRIGGER LMD_Pacient
+AFTER INSERT OR UPDATE OR DELETE ON Pacient_copie
+BEGIN
+    --Insert la ineputul anului in intervalul orar 8-12
+    --Update la inceputul lunii in intervalul orar 12-16
+    --Delete la sfarsitul anului in intervalul orar 8-18
+
+    IF INSERTING THEN
+        IF TO_CHAR(SYSDATE, 'HH24') NOT BETWEEN 8 AND 12 OR To_CHAR(SYSDATE, 'MM') <> '01' OR To_CHAR(SYSDATE, 'DD') <> '01' THEN
+            DBMS_OUTPUT.PUT_LINE('Insert se poate face doar pe 01.01  in intervalul orar 8-12');
+            RAISE_APPLICATION_ERROR(-20001, 'Insert se poate face doar pe 01.01  in intervalul orar 8-12');
+        END IF;
+    ELSIF UPDATING THEN
+        IF TO_CHAR(SYSDATE, 'HH24') NOT BETWEEN 12 AND 16 OR To_CHAR(SYSDATE, 'DD') <> '01' THEN
+            DBMS_OUTPUT.PUT_LINE('Update se poate face doar la inceputul lunii in intervalul orar 12-16');
+            RAISE_APPLICATION_ERROR(-20002, 'Update se poate face doar la inceputul lunii in intervalul orar 12-16');
+        END IF;
+    ELSIF DELETING THEN
+        IF TO_CHAR(SYSDATE, 'HH24') NOT BETWEEN 8 AND 18 OR To_CHAR(SYSDATE, 'MM') <>'12' OR  To_CHAR(SYSDATE, 'DD') <> '31' THEN
+            DBMS_OUTPUT.PUT_LINE('Delete se poate face doar la sfarsitul anului in intervalul orar 8-18');
+            RAISE_APPLICATION_ERROR(-20003, 'Delete se poate face doar la sfarsitul anului in intervalul orar 8-18');
+        END IF;
+    END IF;
+END;
+
+-- Apelare trigger
+INSERT INTO Pacient_copie (pacient_id, nume, prenume, cnp, data_nasterii) VALUES (pacient_seq.NEXTVAL, 'Popescu', 'Ion', '1234567890123', TO_DATE('1990-01-01', 'YYYY-MM-DD'));
+UPDATE Pacient_copie SET nume = 'Ionescu' WHERE pacient_id = 1;
+DELETE FROM Pacient_copie WHERE pacient_id = 1;
+
+--11. Definiți un trigger de tip LMD la nivel de linie.Declanșați trigger-ul. 
+--trigger lmd la nivel de linie = se declanseaza pentru fiecare linie afectata de operatiile de insert, update sau delete
+
+
+--Creez un tabel CostProceduri care are pretul investigatiilor
+
+CREATE TABLE CostProceduri(
+    id NUMBER,
+    pret NUMBER 
+);
+
+--Adug in tabelul CostProceduri total pretul pentru toate investigatiile facute intr-o luna folosind un select
+INSERT INTO CostProceduri(id, pret) SELECT 1, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '01';
+INSERT INTO CostProceduri(id, pret) SELECT 2, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '02';
+INSERT INTO CostProceduri(id, pret) SELECT 3, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '03';
+INSERT INTO CostProceduri(id, pret) SELECT 4, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '04';
+INSERT INTO CostProceduri(id, pret) SELECT 5, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '05';
+INSERT INTO CostProceduri(id, pret) SELECT 6, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '06';
+INSERT INTO CostProceduri(id, pret) SELECT 7, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '07';
+INSERT INTO CostProceduri(id, pret) SELECT 8, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '08';
+INSERT INTO CostProceduri(id, pret) SELECT 9, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '09';
+INSERT INTO CostProceduri(id, pret) SELECT 10, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '10';
+INSERT INTO CostProceduri(id, pret) SELECT 11, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '11';
+INSERT INTO CostProceduri(id, pret) SELECT 12, NVL(SUM(pret), 0) FROM INVESTIGATIE WHERE TO_CHAR(data_inceput, 'MM') = '12';
+
+SELECT * FROM CostProceduri;
+
+CREATE TABLE Investigatie_copie AS SELECT * FROM Investigatie;
+
+CREATE OR REPLACE PROCEDURE Pret_Investigatii 
+    (p_id IN NUMBER, pret_investigatie IN NUMBER) IS
+BEGIN
+    UPDATE CostProceduri
+    SET pret = GREATEST(pret + NVL(pret_investigatie, 0), 0)
+    WHERE id = p_id;
+END Pret_Investigatii;
+
+CREATE OR REPLACE TRIGGER LMD_Investigatie
+AFTER INSERT OR UPDATE OR DELETE ON Investigatie_copie
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN
+        DBMS_OUTPUT.PUT_LINE('Inserting: ' || :NEW.data_inceput || ' - ' || :NEW.pret);
+        PRET_INVESTIGATII(TO_NUMBER(TO_CHAR(:NEW.data_inceput, 'MM')), :NEW.pret);
+    ELSIF UPDATING THEN
+        DBMS_OUTPUT.PUT_LINE('Updating: ' || :OLD.data_inceput || ' - ' || :OLD.pret || ' to ' || :NEW.data_inceput || ' - ' || :NEW.pret);
+        PRET_INVESTIGATII(TO_NUMBER(TO_CHAR(:OLD.data_inceput, 'MM')), - :OLD.pret);
+        PRET_INVESTIGATII(TO_NUMBER(TO_CHAR(:NEW.data_inceput, 'MM')), :NEW.pret);
+    ELSIF DELETING THEN
+        DBMS_OUTPUT.PUT_LINE('Deleting: ' || :OLD.data_inceput || ' - ' || :OLD.pret);
+        PRET_INVESTIGATII(TO_NUMBER(TO_CHAR(:OLD.data_inceput, 'MM')), - :OLD.pret);
+    END IF;
+END;
+-- Apelare trigger
+INSERT INTO Investigatie_copie (investigatie_id, denumire, data_inceput, data_sfarsit, pret)
+VALUES (investigatie_seq.NEXTVAL, 'Investigatie1',  TO_DATE('2024-01-01', 'YYYY-MM-DD'), TO_DATE('2024-01-01', 'YYYY-MM-DD'), 100);
+UPDATE Investigatie_copie SET pret = 400 WHERE investigatie_id = 2;
+DELETE FROM Investigatie_copie WHERE investigatie_id = 1;
+
+SELECT * FROM CostProceduri;
+
+--12. Definiți un trigger de tip LDD. Declanșați trigger-ul.
+--trigger ldd = se declanseaza dupa ce s-a facut operatia de drop
+
+--Creez un tabel in care sa se retina informatii 
+CREATE TABLE ModificariTabele(
+   nume_bd VARCHAR2(100),
+   user_bd VARCHAR2(100),
+   eveniment VARCHAR2(100),
+   nume VARCHAR2(100),
+   tip VARCHAR2(100),
+   data TIMESTAMP(3)
+);
+
+--Creez trigger-ul
+CREATE OR REPLACE TRIGGER Trg_LDD
+AFTER DROP OR ALTER OR CREATE ON SCHEMA
+BEGIN
+    INSERT INTO ModificariTabele(nume_bd, user_bd, eveniment, nume, tip, data)
+    VALUES (ora_database_name, ora_login_user, ora_sysevent, ora_dict_obj_name, ora_dict_obj_type, SYSTIMESTAMP);
+END;
+
+Select * from ModificariTabele;
+
+CREATE table Medic_copie AS SELECT * FROM Medic;
+
+SELECT * FROM ModificariTabele;
+
+ALTER TABLE Medic_copie ADD data_angajare DATE;
+
+SELECT * FROM ModificariTabele;
+
+DROP TABLE Medic_copie;
+
+SELECT * FROM ModificariTabele;
+
+Create or replace TYPE vectori as object
+(
+    x number,
+    y number
+);
+
+Create or replace type vectori_t as table of vectori;
+
+SELECT * FROM ModificariTabele;
+
+
+--13. Formulați în limbaj natural o problemă pe care să o rezolvați folosind un pachet care să includă
+--tipuri de date complexe și obiecte necesare unui flux de acțiuni integrate, specifice bazei de date.
+
+--Problema: Un spital dorește să automatizeze procesul de gestionare a afecțiunilor pacienților.
+--Pentru aceasta, se dorește implementarea unui pachet care să conțină următoarele funcționalități:
+--1. Crearea unei liste de tratamente pentru o afecțiune specificată.
+--2. Numarul de pacienti afectati de o anumita afectiune.
+--3. Afisarea pacientilor care au o anumita afectiune.(nume, prenume, varsta)
+--4. Durata medie a tratamentului pentru o anumita afectiune si daca depseste 3 luni sa fie incadrata in categoria "Boli Cronice"
+--5. La afectiunea cel mai des intalnita sa se afiseze un mesaj de avertizare, daca sunt mai multe se vor afisa toate
+--6. Procedura pentru afisare
+
+-- Crearea tipurilor de date complexe
+
+-- Creerea tipului de obiect Tratament_Obj
+CREATE OR REPLACE TYPE Tratament_Obj AS OBJECT(
+    denumire VARCHAR2(100),
+    durata NUMBER
+);
+
+-- Crearea tipului de tabel Tratament_T
+CREATE OR REPLACE TYPE Tratament_T IS TABLE OF Tratament_Obj;
+
+-- Crearea pachetului
+CREATE OR REPLACE PACKAGE Gestionare_Afectiuni AS
+
+    -- Crearea unei liste de tratamente pentru o afecțiune specificată
+    FUNCTION Creare_Tratamente(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN Tratament_T;
+
+    -- Numarul de pacienti afectati de o anumita afectiune
+    FUNCTION Numar_Pacienti(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN NUMBER;
+
+    -- Afisarea pacientilor care au o anumita afectiune
+    PROCEDURE Afisare_Pacienti(
+        denumire_afectiune IN VARCHAR2
+    );
+
+    -- Durata medie a tratamentului pentru o anumita afectiune
+    FUNCTION Durata_Medie_Tratament(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN NUMBER;
+
+    -- Verificare daca durata medie a tratamentului depaseste 3 luni
+    FUNCTION Verificare_Durata_Medie(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN VARCHAR2;
+
+    --Functie care returneaza numarul de pacienti afectati de cele mai intalnite afectiuni
+    FUNCTION Numar_Pacienti_Afectiuni RETURN NUMBER;
+
+    --Procedura pentru afisarea celor mai intalnite afectiuni
+    PROCEDURE AfisareAfectiuni;
+
+    -- Procedura pentru afisare
+    PROCEDURE Afisare;
+
+END Gestionare_Afectiuni;
+
+
+-- Implementare pachet
+CREATE OR REPLACE PACKAGE BODY Gestionare_Afectiuni AS
+
+    -- Crearea unei liste de tratamente pentru o afecțiune specificată
+    FUNCTION Creare_Tratamente(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN Tratament_T IS
+        tratamente Tratament_T := Tratament_T();
+    BEGIN
+        FOR tr IN (
+            SELECT DISTINCT t.denumire, Floor(MONTHS_BETWEEN(data_sfarsit, data_incepere)) as durata
+            FROM Tratament t
+            JOIN Afectiune_Tratament at ON t.tratament_id = at.tratament_id
+            JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+            WHERE a.denumire = denumire_afectiune
+        ) LOOP
+            tratamente.EXTEND; -- Extindem tabelul de tratamente
+            tratamente(tratamente.LAST) := Tratament_Obj(tr.denumire, tr.durata); -- Adaugam un nou tratament
+        END LOOP;
+
+        RETURN tratamente;
+
+    END Creare_Tratamente;
+
+    -- Numarul de pacienti afectati de o anumita afectiune
+    FUNCTION Numar_Pacienti(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN NUMBER IS
+        nr_pacienti NUMBER;
+    BEGIN
+        SELECT COUNT(DISTINCT p.pacient_id)
+        INTO nr_pacienti
+        FROM Pacient p
+        JOIN Istoric_Medical im ON p.pacient_id = im.pacient_id
+        JOIN Afectiune_Tratament at ON im.afectiune_tratament_id = at.afectiune_tratament_id
+        JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+        WHERE a.denumire = denumire_afectiune;
+
+        RETURN nr_pacienti;
+    END Numar_Pacienti;
+
+    -- Afisarea pacientilor care au o anumita afectiune
+    PROCEDURE Afisare_Pacienti(
+        denumire_afectiune IN VARCHAR2
+    ) IS
+    BEGIN
+        IF Numar_Pacienti(denumire_afectiune) = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('Nu exista pacienti pentru afectiunea ' || denumire_afectiune);
+            RETURN;
+        END IF;
+
+        FOR pacient IN (
+            SELECT DISTINCT p.nume, p.prenume,  EXTRACT(YEAR FROM p.data_nasterii)- EXTRACT(YEAR FROM SYSDATE) AS varsta
+            FROM Pacient p
+            JOIN Istoric_Medical im ON p.pacient_id = im.pacient_id
+            JOIN Afectiune_Tratament at ON im.afectiune_tratament_id = at.afectiune_tratament_id
+            JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+            WHERE a.denumire = denumire_afectiune
+        ) LOOP
+            DBMS_OUTPUT.PUT_LINE('Pacient: ' || pacient.nume || ' ' || pacient.prenume || ' - Varsta: ' || pacient.varsta);
+        END LOOP;
+    END Afisare_Pacienti;
+
+
+    -- Durata medie a tratamentului pentru o anumita afectiune
+    FUNCTION Durata_Medie_Tratament(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN NUMBER IS
+        durata_medie NUMBER;
+    BEGIN
+        SELECT Floor(AVG(MONTHS_BETWEEN(t.data_sfarsit, t.data_incepere)))
+        INTO durata_medie
+        FROM Tratament t
+        JOIN Afectiune_Tratament at ON t.tratament_id = at.tratament_id
+        JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+        WHERE a.denumire = denumire_afectiune;
+
+        IF durata_medie IS NULL THEN
+            durata_medie := 0;
+        END IF;
+
+        RETURN durata_medie;
+    END Durata_Medie_Tratament;
+
+    -- Verificare daca durata medie a tratamentului depaseste 3 luni
+    FUNCTION Verificare_Durata_Medie(
+        denumire_afectiune IN VARCHAR2
+    ) RETURN VARCHAR2 IS
+        durata_medie NUMBER;
+    BEGIN
+        durata_medie := Durata_Medie_Tratament(denumire_afectiune);
+
+        IF durata_medie > 3 THEN
+            RETURN 'Boli Cronice';
+        ELSE
+            RETURN 'Boli Acute';
+        END IF;
+    END Verificare_Durata_Medie;
+
+    --Functie care returneaza numarul de pacienti afectati de cele mai intalnite afectiuni
+    FUNCTION Numar_Pacienti_Afectiuni RETURN NUMBER IS
+        nr_pacienti NUMBER;
+    BEGIN
+        SELECT COUNT(DISTINCT p.pacient_id)
+        INTO nr_pacienti
+        FROM Pacient p
+        JOIN Istoric_Medical im ON p.pacient_id = im.pacient_id
+        JOIN Afectiune_Tratament at ON im.afectiune_tratament_id = at.afectiune_tratament_id
+        JOIN Afectiune a ON at.afectiune_id = a.afectiune_id
+        GROUP BY a.denumire
+        ORDER BY COUNT(DISTINCT p.pacient_id) DESC
+        FETCH FIRST ROW ONLY;
+
+        RETURN nr_pacienti;
+    END Numar_Pacienti_Afectiuni;
+
+    --Procedura pentru afisarea celor mai intalnite afectiuni
+    PROCEDURE AfisareAfectiuni IS
+    BEGIN
+        FOR afectiune_rec IN (
+            SELECT a.denumire, COUNT(DISTINCT p.pacient_id) AS nr_pacienti
+            FROM Afectiune a
+            JOIN Afectiune_Tratament at ON a.afectiune_id = at.afectiune_id
+            JOIN Istoric_Medical im ON at.afectiune_tratament_id = im.afectiune_tratament_id
+            JOIN Pacient p ON im.pacient_id = p.pacient_id
+            GROUP BY a.denumire
+            ORDER BY nr_pacienti DESC
+        ) LOOP
+            DBMS_OUTPUT.PUT_LINE('Afectiune: ' || afectiune_rec.denumire || ' - Numar Pacienti: ' || afectiune_rec.nr_pacienti);
+        END LOOP;
+    END AfisareAfectiuni;
+
+    -- Procedura pentru afisare
+    PROCEDURE Afisare IS
+    --Creez un cursor pentru a afisa toate afectiunile
+    CURSOR c_afectiuni IS
+        SELECT DISTINCT a.denumire
+        FROM Afectiune a;
+    BEGIN
+       
+        DBMS_OUTPUT.PUT_LINE('---------------------------------');
+        FOR afectiune_rec IN c_afectiuni LOOP
+            DBMS_OUTPUT.PUT_LINE('Afectiune: ' || afectiune_rec.denumire);
+            DBMS_OUTPUT.PUT_LINE('---------------------------------');
+                IF Numar_Pacienti(afectiune_rec.denumire) = Numar_Pacienti_Afectiuni THEN
+                    DBMS_OUTPUT.PUT_LINE('--Cea mai intalnita afectiune--');
+                END IF;
+
+            DBMS_OUTPUT.PUT_LINE('Tratamente:');
+            IF Creare_Tratamente(afectiune_rec.denumire).COUNT = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Nu exista tratamente pentru afectiunea ' || afectiune_rec.denumire);
+            ELSE
+            FOR i IN 1..Creare_Tratamente(afectiune_rec.denumire).COUNT LOOP
+                DBMS_OUTPUT.PUT_LINE('Denumire: ' || Creare_Tratamente(afectiune_rec.denumire)(i).denumire || ' - Durata: ' || Creare_Tratamente(afectiune_rec.denumire)(i).durata);
+            END LOOP;
+            END IF;
+
+            IF Numar_Pacienti(afectiune_rec.denumire) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Nu exista pacienti pentru afectiunea ' || afectiune_rec.denumire);
+            ELSE
+                DBMS_OUTPUT.PUT_LINE('Numar Pacienti: ' || Numar_Pacienti(afectiune_rec.denumire));
+            END IF;
+            DBMS_OUTPUT.PUT_LINE('Durata Medie Tratament: ' || Durata_Medie_Tratament(afectiune_rec.denumire));
+            DBMS_OUTPUT.PUT_LINE('Tip Afectiune: ' || Verificare_Durata_Medie(afectiune_rec.denumire));
+
+            DBMS_OUTPUT.PUT_LINE('Pacienti:');
+            Afisare_Pacienti(afectiune_rec.denumire);
+
+            DBMS_OUTPUT.PUT_LINE('---------------------------------');
+        END LOOP;
+        
+        DBMS_OUTPUT.PUT_LINE('Top afectiuni:');
+        AfisareAfectiuni;
+    END Afisare;
+END Gestionare_Afectiuni;
+
+-- Apelare pachet
+BEGIN
+    Gestionare_Afectiuni.Afisare;
+END;
+
+
+--Pentru fiecare pacient  nr de cosnulatii si lista lor
+
+Create or replace Procedure ConsultatiiPacienti
+IS
+    CURSOR c_pacienti IS
+        SELECT DISTINCT p.pacient_id, p.nume, p.prenume
+        FROM Pacient p;
+    
+    CURSOR c_consultatii  IS
+        SELECT c.consultatie_id, c.data_consultatie, c.medic_id, c.pacient_id
+        FROM Consultatie c;
+    
+
+    nr_consultatii NUMBER;
+    nume_medic Medic.nume%TYPE;
+BEGIN
+    FOR pacient_rec IN c_pacienti LOOP
+        SELECT COUNT(*)
+        INTO nr_consultatii
+        FROM Consultatie
+        WHERE pacient_id = pacient_rec.pacient_id;
+
+        DBMS_OUTPUT.PUT_LINE('Pacient: ' || pacient_rec.nume || ' ' || pacient_rec.prenume || ' - Numar Consultatii: ' || nr_consultatii);
+        DBMS_OUTPUT.PUT_LINE('Consultatii:');
+
+        FOR consultatie_rec IN c_consultatii LOOP
+            SELECT nume
+            INTO nume_medic
+            FROM Medic
+            WHERE medic_id = consultatie_rec.medic_id;
+
+            IF consultatie_rec.pacient_id = pacient_rec.pacient_id THEN
+                DBMS_OUTPUT.PUT_LINE('Consultatie: ' || consultatie_rec.consultatie_id || ' - Data: ' || consultatie_rec.data_consultatie || ' - Medic: ' || nume_medic);
+            END IF; 
+        
+        END LOOP;
+    END LOOP;
+END ConsultatiiPacienti;    
+    
+-- Apelare procedura
+BEGIN
+    ConsultatiiPacienti;
+END;
+
+--Cu cursor parametrizat
+CREATE OR REPLACE PROCEDURE ConsultatiiPacienti1 IS
+    CURSOR c_pacienti IS
+        SELECT DISTINCT p.pacient_id, p.nume, p.prenume
+        FROM Pacient p;
+
+    CURSOR c_consultatii(p_pacient_id NUMBER) IS
+        SELECT c.consultatie_id, c.data_consultatie, c.medic_id, c.pacient_id
+        FROM Consultatie c
+        WHERE c.pacient_id = p_pacient_id;
+
+    nr_consultatii NUMBER;
+    nume_medic Medic.nume%TYPE;
+BEGIN
+    FOR pacient_rec IN c_pacienti LOOP
+        SELECT COUNT(*)
+        INTO nr_consultatii
+        FROM Consultatie
+        WHERE pacient_id = pacient_rec.pacient_id;
+
+        DBMS_OUTPUT.PUT_LINE('Pacient: ' || pacient_rec.nume || ' ' || pacient_rec.prenume || ' - Numar Consultatii: ' || nr_consultatii);
+        DBMS_OUTPUT.PUT_LINE('Consultatii:');
+
+        FOR consultatie_rec IN c_consultatii(pacient_rec.pacient_id) LOOP
+            SELECT nume
+            INTO nume_medic
+            FROM Medic
+            WHERE medic_id = consultatie_rec.medic_id;
+
+            DBMS_OUTPUT.PUT_LINE('Consultatie: ' || consultatie_rec.consultatie_id || ' - Data: ' || consultatie_rec.data_consultatie || ' - Medic: ' || nume_medic);
+        END LOOP;
+    END LOOP;
+END ConsultatiiPacienti1;
+
+-- Apelare procedura
+BEGIN
+    ConsultatiiPacienti1;
+END;
+--la examen ex 7
+
